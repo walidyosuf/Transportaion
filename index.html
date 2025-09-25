@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>????? ????? ?????? ?????? ??????</title>
+    <title>تطبيق توزيع سيارات الركوب للعمال</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         * {
@@ -285,166 +285,166 @@
 <body>
     <div class="container">
         <header>
-            <h1>????? ????? ?????? ?????? ??????</h1>
-            <p class="description">???? ??? ?????? ?????? ??? ?????? ?????? ????? ??? ???????? ?????? ?????? ?????????</p>
+            <h1>تطبيق توزيع سيارات الركوب للعمال</h1>
+            <p class="description">نظام ذكي لتوزيع العمال على سيارات الشركة بناءً على المسارات ومحطات الركوب والورديات</p>
         </header>
         
         <div class="tabs">
-            <div class="tab active" data-tab="cars">????? ???????? ?????????</div>
-            <div class="tab" data-tab="employees">????? ??????</div>
-            <div class="tab" data-tab="distribution">????? ??????</div>
+            <div class="tab active" data-tab="cars">إدارة السيارات والمسارات</div>
+            <div class="tab" data-tab="employees">إدارة العمال</div>
+            <div class="tab" data-tab="distribution">توزيع العمال</div>
         </div>
         
-        <!-- ==================== ??? ????? ???????? ==================== -->
+        <!-- ==================== قسم إدارة السيارات ==================== -->
         <div class="tab-content active" id="cars-tab">
             <div class="app-section">
-                <h2>??????? ?????? ???????? ?? ??? Excel</h2>
+                <h2>استيراد بيانات السيارات من ملف Excel</h2>
                 <div class="excel-format">
-                    <h3>????? ??? Excel ??????? ????????:</h3>
-                    <p>??? ?? ????? ????? ??? ??????? ??????? ????????. ???? ????? ??????? ???????? ??? ??? ???? ??????.</p>
+                    <h3>تنسيق ملف Excel المطلوب للسيارات:</h3>
+                    <p>يجب أن يحتوي الملف على الأعمدة التالية بالترتيب. سيتم تجميع المحطات تلقائياً تحت اسم الخط الواحد.</p>
                     <table class="excel-table">
                         <thead>
                             <tr>
-                                <th>??? ????</th>
-                                <th>??? ???????</th>
-                                <th>???? ??????</th>
-                                <th>???? ???????</th>
+                                <th>اسم الخط</th>
+                                <th>سعة السيارة</th>
+                                <th>محطة الركوب</th>
+                                <th>موعد التواجد</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>?? ??????</td>
+                                <td>خط الشمال</td>
                                 <td>14</td>
-                                <td>???? ????????</td>
+                                <td>محطة الياسمين</td>
                                 <td>06:00</td>
                             </tr>
                              <tr>
-                                <td>?? ??????</td>
+                                <td>خط الشمال</td>
                                 <td>14</td>
-                                <td>???? ???????</td>
+                                <td>محطة الصحافة</td>
                                 <td>06:15</td>
                             </tr>
                         </tbody>
                     </table>
-                    <p>??????: ????? ????? <a href="#" id="downloadCarTemplate">????? ??? Excel ????????</a>.</p>
+                    <p>ملاحظة: يمكنك تحميل <a href="#" id="downloadCarTemplate">نموذج ملف Excel للسيارات</a>.</p>
                 </div>
                  <div class="input-group">
-                    <label>????? ??? Excel ????????</label>
+                    <label>تحميل ملف Excel للسيارات</label>
                     <div class="file-input-container">
                         <input type="file" id="carsExcelFile" accept=".xlsx, .xls">
                         <div class="file-input-label">
-                            <span id="carFileLabel">???? ??????? ??? Excel</span>
+                            <span id="carFileLabel">انقر لاختيار ملف Excel</span>
                             <div class="file-name" id="carFileName"></div>
                         </div>
                     </div>
                 </div>
                  <div class="upload-actions">
-                    <button id="importCarsExcelBtn" class="btn-excel">??????? ?????? ????????</button>
-                    <button id="clearCarsBtn" class="btn-secondary">??? ???? ????????</button>
+                    <button id="importCarsExcelBtn" class="btn-excel">استيراد بيانات السيارات</button>
+                    <button id="clearCarsBtn" class="btn-secondary">مسح جميع السيارات</button>
                 </div>
             </div>
 
             <div class="app-section">
-                <h2>???????? ??????? (<span id="carsCount">0</span>)</h2>
+                <h2>السيارات المضافة (<span id="carsCount">0</span>)</h2>
                 <div class="cars-list" id="carsList">
-                    <!-- ????? ???????? ??? ?????????? -->
+                    <!-- ستضاف السيارات هنا ديناميكيًا -->
                 </div>
             </div>
         </div>
         
-        <!-- ==================== ??? ????? ?????? ==================== -->
+        <!-- ==================== قسم إدارة العمال ==================== -->
         <div class="tab-content" id="employees-tab">
             <div class="app-section">
-                <h2>??????? ?????? ?????? ?? ??? Excel</h2>
+                <h2>استيراد بيانات العمال من ملف Excel</h2>
                 
                 <div class="excel-format">
-                    <h3>????? ??? Excel ??????? ??????:</h3>
-                    <p>?? ??? ??? ??? ??????? ??????? ???? ???????? "????? ???? ?????".</p>
+                    <h3>تنسيق ملف Excel المطلوب للعمال:</h3>
+                    <p>في حال ترك حقل الوردية فارغاً، سيتم اعتبارها "وردية أولى قصيرة".</p>
                     <table class="excel-table">
                         <thead>
                             <tr>
-                                <th>??? ??????</th>
-                                <th>???????</th>
-                                <th>???? ??????</th>
-                                <th>???????</th>
+                                <th>اسم العامل</th>
+                                <th>الإدارة</th>
+                                <th>محطة الركوب</th>
+                                <th>الوردية</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>???? ????</td>
-                                <td>???????</td>
-                                <td>???? ????????</td>
-                                <td>????? ???? ????? (7:30? - 7:30?)</td>
+                                <td>أحمد محمد</td>
+                                <td>الهندسة</td>
+                                <td>محطة الياسمين</td>
+                                <td>وردية أولى طويلة (7:30ص - 7:30م)</td>
                             </tr>
                             <tr>
-                                <td>????? ???????</td>
-                                <td>??????? ???????</td>
-                                <td>???? ???????</td>
+                                <td>فاطمة عبدالله</td>
+                                <td>الموارد البشرية</td>
+                                <td>محطة الصحافة</td>
                                 <td></td>
                             </tr>
                         </tbody>
                     </table>
-                    <p>??????: ????? ????? <a href="#" id="downloadEmployeeTemplate">????? ??? Excel ??????</a>.</p>
+                    <p>ملاحظة: يمكنك تحميل <a href="#" id="downloadEmployeeTemplate">نموذج ملف Excel للعمال</a>.</p>
                 </div>
                 
                 <div class="input-group">
-                    <label>????? ??? Excel ??????</label>
+                    <label>تحميل ملف Excel للعمال</label>
                     <div class="file-input-container">
                         <input type="file" id="employeesExcelFile" accept=".xlsx, .xls">
                         <div class="file-input-label">
-                            <span id="employeeFileLabel">???? ??????? ??? Excel</span>
+                            <span id="employeeFileLabel">انقر لاختيار ملف Excel</span>
                             <div class="file-name" id="employeeFileName"></div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="upload-actions">
-                    <button id="importEmployeesExcelBtn" class="btn-excel">??????? ????????</button>
-                    <button id="clearEmployeesBtn" class="btn-secondary">??? ???? ??????</button>
+                    <button id="importEmployeesExcelBtn" class="btn-excel">استيراد البيانات</button>
+                    <button id="clearEmployeesBtn" class="btn-secondary">مسح جميع العمال</button>
                 </div>
             </div>
             
             <div class="app-section">
-                <h2>?????? ???????? (<span id="employeesCount">0</span>)</h2>
+                <h2>العمال المضافون (<span id="employeesCount">0</span>)</h2>
                 <div class="employees-list" id="employeesList">
-                    <!-- ????? ?????? ??? ?????????? -->
+                    <!-- ستضاف العمال هنا ديناميكيًا -->
                 </div>
             </div>
         </div>
         
-        <!-- ==================== ??? ????? ?????? ==================== -->
+        <!-- ==================== قسم توزيع العمال ==================== -->
         <div class="tab-content" id="distribution-tab">
             <div class="app-section">
-                <h2>????? ?????? ??? ????????</h2>
-                <p>???? ???? ??????? ?????? ????? ??? ????? ?????? ???? ???????? ??????? ??? ????? ??? ???.</p>
-                <button id="calculateDistribution">???? ??????? ??????</button>
+                <h2>توزيع العمال على السيارات</h2>
+                <p>سيتم حساب التوزيع الأمثل بناءً على محطات الركوب وسعة السيارات المتاحة لكل وردية على حدة.</p>
+                <button id="calculateDistribution">حساب التوزيع الأمثل</button>
             </div>
             
             <div class="results-section" id="resultsSection">
-                <h2>????? ???????</h2>
+                <h2>نتائج التوزيع</h2>
                 <div id="distributionResults">
-                    <!-- ????? ??????? ??? -->
+                    <!-- ستظهر النتائج هنا -->
                 </div>
                 <div id="summaryReportSection">
-                    <!-- ????? ??????? ???????? ??? -->
+                    <!-- سيظهر التقرير الإجمالي هنا -->
                 </div>
                 <div class="summary" id="distributionSummary">
-                    <!-- ???? ??????? -->
+                    <!-- ملخص التوزيع -->
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // ==================== ????? ????????? ??????? ??????? ====================
+        // ==================== تهيئة المتغيرات وبيانات التطبيق ====================
         let cars = [];
         let employees = [];
 
-        // ????? DOM
+        // عناصر DOM
         const tabs = document.querySelectorAll('.tab');
         const tabContents = document.querySelectorAll('.tab-content');
         
-        // ????? ????????
+        // عناصر السيارات
         const carsList = document.getElementById('carsList');
         const carsCount = document.getElementById('carsCount');
         const carsExcelFile = document.getElementById('carsExcelFile');
@@ -454,7 +454,7 @@
         const carFileName = document.getElementById('carFileName');
         const downloadCarTemplate = document.getElementById('downloadCarTemplate');
 
-        // ????? ??????
+        // عناصر العمال
         const employeesList = document.getElementById('employeesList');
         const employeesCount = document.getElementById('employeesCount');
         const employeesExcelFile = document.getElementById('employeesExcelFile');
@@ -464,14 +464,14 @@
         const employeeFileName = document.getElementById('employeeFileName');
         const downloadEmployeeTemplate = document.getElementById('downloadEmployeeTemplate');
         
-        // ????? ???????
+        // عناصر التوزيع
         const calculateDistributionBtn = document.getElementById('calculateDistribution');
         const resultsSection = document.getElementById('resultsSection');
         const distributionResults = document.getElementById('distributionResults');
         const distributionSummary = document.getElementById('distributionSummary');
         const summaryReportSection = document.getElementById('summaryReportSection');
 
-        // ==================== ???? ??????? (Tabs) ====================
+        // ==================== نظام التبويب (Tabs) ====================
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
                 const tabId = tab.getAttribute('data-tab');
@@ -484,14 +484,14 @@
             });
         });
 
-        // ==================== ????? ????? ???????? ====================
+        // ==================== وظائف إدارة السيارات ====================
 
         function updateCarsList() {
             carsList.innerHTML = '';
             carsCount.textContent = cars.length;
             
             if (cars.length === 0) {
-                carsList.innerHTML = '<p>?? ??? ????? ?? ?????? ???.</p>';
+                carsList.innerHTML = '<p>لم تتم إضافة أي سيارات بعد.</p>';
                 return;
             }
             
@@ -499,11 +499,11 @@
                 const carCard = document.createElement('div');
                 carCard.className = 'car-card';
                 carCard.innerHTML = `
-                    <button class="delete-btn" onclick="deleteCar(${car.id})">�</button>
+                    <button class="delete-btn" onclick="deleteCar(${car.id})">×</button>
                     <h3>${car.lineName}</h3>
-                    <p><strong>?????:</strong> ${car.capacity} ????</p>
-                    <p><strong>???????:</strong> ${car.stations.join('? ')}</p>
-                    <p><strong>????????:</strong> ${car.times.join('? ')}</p>
+                    <p><strong>السعة:</strong> ${car.capacity} ركاب</p>
+                    <p><strong>المحطات:</strong> ${car.stations.join('، ')}</p>
+                    <p><strong>المواعيد:</strong> ${car.times.join('، ')}</p>
                 `;
                 carsList.appendChild(carCard);
             });
@@ -518,17 +518,17 @@
             const file = e.target.files[0];
             if (file) {
                 carFileName.textContent = file.name;
-                carFileLabel.textContent = '?? ?????? ?????: ' + file.name;
+                carFileLabel.textContent = 'تم اختيار الملف: ' + file.name;
             } else {
                 carFileName.textContent = '';
-                carFileLabel.textContent = '???? ??????? ??? Excel';
+                carFileLabel.textContent = 'انقر لاختيار ملف Excel';
             }
         });
 
         importCarsExcelBtn.addEventListener('click', function() {
             const file = carsExcelFile.files[0];
             if (!file) {
-                alert('???? ?????? ??? Excel ???????? ?????.');
+                alert('يرجى اختيار ملف Excel للسيارات أولاً.');
                 return;
             }
             
@@ -576,21 +576,21 @@
                     }
                     
                     updateCarsList();
-                    alert(`?? ??????? ${importedCount} ??/???? ?????.`);
+                    alert(`تم استيراد ${importedCount} خط/مسار بنجاح.`);
                     carsExcelFile.value = '';
                     carFileName.textContent = '';
-                    carFileLabel.textContent = '???? ??????? ??? Excel';
+                    carFileLabel.textContent = 'انقر لاختيار ملف Excel';
 
                 } catch (error) {
                     console.error('Error reading car Excel file:', error);
-                    alert('??? ??? ????? ????? ??? Excel. ???? ?????? ?? ??? ????? ?????.');
+                    alert('حدث خطأ أثناء قراءة ملف Excel. يرجى التأكد من صحة تنسيق الملف.');
                 }
             };
             reader.readAsArrayBuffer(file);
         });
         
         clearCarsBtn.addEventListener('click', function() {
-            if (cars.length > 0 && confirm('?? ??? ????? ?? ????? ?? ??? ???? ?????? ?????????')) {
+            if (cars.length > 0 && confirm('هل أنت متأكد من رغبتك في مسح جميع بيانات السيارات؟')) {
                 cars = [];
                 updateCarsList();
             }
@@ -599,25 +599,25 @@
         downloadCarTemplate.addEventListener('click', function(e) {
             e.preventDefault();
             const data = [
-                ['??? ????', '??? ???????', '???? ??????', '???? ???????'],
-                ['?? ??????', 14, '???? ????????', '06:00'],
-                ['?? ??????', 14, '???? ???????', '06:15'],
-                ['?? ?????', 10, '???? ??????', '06:30']
+                ['اسم الخط', 'سعة السيارة', 'محطة الركوب', 'موعد التواجد'],
+                ['خط الشمال', 14, 'محطة الياسمين', '06:00'],
+                ['خط الشمال', 14, 'محطة الصحافة', '06:15'],
+                ['خط الشرق', 10, 'محطة الروضة', '06:30']
             ];
             const ws = XLSX.utils.aoa_to_sheet(data);
             const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, '????????');
-            XLSX.writeFile(wb, '?????_??????_????????.xlsx');
+            XLSX.utils.book_append_sheet(wb, ws, 'السيارات');
+            XLSX.writeFile(wb, 'نموذج_بيانات_السيارات.xlsx');
         });
 
-        // ==================== ????? ????? ?????? ====================
+        // ==================== وظائف إدارة العمال ====================
         
         function updateEmployeesList() {
             employeesList.innerHTML = '';
             employeesCount.textContent = employees.length;
             
             if (employees.length === 0) {
-                employeesList.innerHTML = '<p>?? ??? ????? ?? ???? ???.</p>';
+                employeesList.innerHTML = '<p>لم تتم إضافة أي عمال بعد.</p>';
                 return;
             }
             
@@ -625,11 +625,11 @@
                 const employeeCard = document.createElement('div');
                 employeeCard.className = 'employee-card';
                 employeeCard.innerHTML = `
-                    <button class="delete-btn" onclick="deleteEmployee(${employee.id})">�</button>
+                    <button class="delete-btn" onclick="deleteEmployee(${employee.id})">×</button>
                     <h3>${employee.name}</h3>
-                    <p><strong>???????:</strong> ${employee.department}</p>
-                    <p><strong>???? ??????:</strong> ${employee.station}</p>
-                    <p><strong>???????:</strong> ${employee.shift}</p>
+                    <p><strong>الإدارة:</strong> ${employee.department}</p>
+                    <p><strong>محطة الركوب:</strong> ${employee.station}</p>
+                    <p><strong>الوردية:</strong> ${employee.shift}</p>
                 `;
                 employeesList.appendChild(employeeCard);
             });
@@ -644,17 +644,17 @@
             const file = e.target.files[0];
             if (file) {
                 employeeFileName.textContent = file.name;
-                employeeFileLabel.textContent = '?? ?????? ?????: ' + file.name;
+                employeeFileLabel.textContent = 'تم اختيار الملف: ' + file.name;
             } else {
                 employeeFileName.textContent = '';
-                employeeFileLabel.textContent = '???? ??????? ??? Excel';
+                employeeFileLabel.textContent = 'انقر لاختيار ملف Excel';
             }
         });
 
         importEmployeesExcelBtn.addEventListener('click', function() {
             const file = employeesExcelFile.files[0];
             if (!file) {
-                alert('???? ?????? ??? Excel ?????? ?????.');
+                alert('يرجى اختيار ملف Excel للعمال أولاً.');
                 return;
             }
             
@@ -678,7 +678,7 @@
                                 name: row[0].toString(),
                                 department: row[1].toString(),
                                 station: row[2].toString(),
-                                shift: (row[3] && row[3].toString().trim() !== '') ? row[3].toString() : '????? ???? ????? (8? - 4?)'
+                                shift: (row[3] && row[3].toString().trim() !== '') ? row[3].toString() : 'وردية أولى قصيرة (8ص - 4م)'
                             };
                             employees.push(employee);
                             importedCount++;
@@ -686,21 +686,21 @@
                     }
                     
                     updateEmployeesList();
-                    alert(`?? ??????? ${importedCount} ???? ?????.`);
+                    alert(`تم استيراد ${importedCount} عامل بنجاح.`);
                     employeesExcelFile.value = '';
                     employeeFileName.textContent = '';
-                    employeeFileLabel.textContent = '???? ??????? ??? Excel';
+                    employeeFileLabel.textContent = 'انقر لاختيار ملف Excel';
 
                 } catch (error) {
                     console.error('Error reading employee Excel file:', error);
-                    alert('??? ??? ????? ????? ??? Excel. ???? ?????? ?? ??? ????? ?????.');
+                    alert('حدث خطأ أثناء قراءة ملف Excel. يرجى التأكد من صحة تنسيق الملف.');
                 }
             };
             reader.readAsArrayBuffer(file);
         });
 
         clearEmployeesBtn.addEventListener('click', function() {
-            if (employees.length > 0 && confirm('?? ??? ????? ?? ????? ?? ??? ???? ?????? ???????')) {
+            if (employees.length > 0 && confirm('هل أنت متأكد من رغبتك في مسح جميع بيانات العمال؟')) {
                 employees = [];
                 updateEmployeesList();
             }
@@ -709,22 +709,22 @@
         downloadEmployeeTemplate.addEventListener('click', function(e) {
             e.preventDefault();
             const data = [
-                ['??? ??????', '???????', '???? ??????', '???????'],
-                ['???? ????', '???????', '???? ????????', '????? ???? ????? (7:30? - 7:30?)'],
-                ['????? ???????', '??????? ???????', '???? ???????', ''],
-                ['???? ???', '???????', '???? ??????', '????? ????? ????? (3:30? - 11:30?)']
+                ['اسم العامل', 'الإدارة', 'محطة الركوب', 'الوردية'],
+                ['أحمد محمد', 'الهندسة', 'محطة الياسمين', 'وردية أولى طويلة (7:30ص - 7:30م)'],
+                ['فاطمة عبدالله', 'الموارد البشرية', 'محطة الصحافة', ''],
+                ['سعيد علي', 'الإنتاج', 'محطة الروضة', 'وردية ثانية قصيرة (3:30م - 11:30م)']
             ];
             const ws = XLSX.utils.aoa_to_sheet(data);
             const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, '??????');
-            XLSX.writeFile(wb, '?????_??????_??????.xlsx');
+            XLSX.utils.book_append_sheet(wb, ws, 'العمال');
+            XLSX.writeFile(wb, 'نموذج_بيانات_العمال.xlsx');
         });
 
-        // ==================== ????? ??????? ???????? ====================
+        // ==================== وظائف التوزيع والنتائج ====================
 
         calculateDistributionBtn.addEventListener('click', () => {
             if (cars.length === 0 || employees.length === 0) {
-                alert('???? ????? ?????? ???????? ??????? ?????.');
+                alert('يرجى إضافة بيانات السيارات والعمال أولاً.');
                 return;
             }
             
@@ -788,13 +788,13 @@
             const uniqueShiftsInResults = [...new Set(distribution.map(c => c.shift))].sort();
 
             if (distribution.length === 0 && unassignedEmployees.length > 0) {
-                 distributionResults.innerHTML = `<p>?? ??? ?????? ??? ?????? ?????? ??? ?? ?????? ?????? ????????.</p>`;
+                 distributionResults.innerHTML = `<p>لم يتم العثور على سيارات مناسبة لأي من ورديات العمال المضافين.</p>`;
             }
 
 
             uniqueShiftsInResults.forEach(shift => {
                  if (distribution.some(car => car.shift === shift && car.assignedEmployees.length > 0)) {
-                    distributionResults.innerHTML += `<h2 style="margin-top:20px;">????? ???????: ${shift}</h2>`;
+                    distributionResults.innerHTML += `<h2 style="margin-top:20px;">نتائج الوردية: ${shift}</h2>`;
 
                     distribution.filter(car => car.shift === shift).forEach(car => {
                         if (car.assignedEmployees.length > 0) {
@@ -802,7 +802,7 @@
 
                             let employeesListHtml = '<ul>';
                             car.assignedEmployees.forEach(emp => {
-                                employeesListHtml += `<li>${emp.name} (??: ${emp.station} - ??????: ${emp.pickupTime})</li>`;
+                                employeesListHtml += `<li>${emp.name} (من: ${emp.station} - الموعد: ${emp.pickupTime})</li>`;
                             });
                             employeesListHtml += '</ul>';
 
@@ -810,9 +810,9 @@
                             resultCard.className = 'result-card';
                             resultCard.innerHTML = `
                                 <h3>${car.lineName}</h3>
-                                <p><strong>???????:</strong> ${car.shift}</p>
-                                <p><strong>?????:</strong> ${car.capacity} | <strong>?????? ????????:</strong> ${car.assignedEmployees.length}</p>
-                                <h4>??????:</h4>
+                                <p><strong>الوردية:</strong> ${car.shift}</p>
+                                <p><strong>السعة:</strong> ${car.capacity} | <strong>العمال الموزعون:</strong> ${car.assignedEmployees.length}</p>
+                                <h4>الركاب:</h4>
                                 ${employeesListHtml}
                             `;
                             distributionResults.appendChild(resultCard);
@@ -822,11 +822,11 @@
             });
             
             if (unassignedEmployees.length > 0) {
-                let unassignedListHtml = unassignedEmployees.map(emp => `<li>${emp.name} (????: ${emp.station}, ?????: ${emp.shift})</li>`).join('');
+                let unassignedListHtml = unassignedEmployees.map(emp => `<li>${emp.name} (محطة: ${emp.station}, وردية: ${emp.shift})</li>`).join('');
                 distributionResults.innerHTML += `
                     <div class="result-card" style="border-color: #e74c3c; margin-top: 20px;">
-                        <h3>???? ?? ??? ???????</h3>
-                        <p>???? ??? ???? ????? ??????? ?? ?????? ??? ???????? ??????? ?? ???????.</p>
+                        <h3>عمال لم يتم توزيعهم</h3>
+                        <p>بسبب عدم مرور سيارة بمحطتهم أو امتلاء سعة السيارات المتاحة في ورديتهم.</p>
                         <ul>${unassignedListHtml}</ul>
                     </div>
                 `;
@@ -839,15 +839,15 @@
 
             let reportHtml = `
                 <div class="app-section">
-                    <h2>??????? ???????? ????????</h2>
+                    <h2>التقرير الإجمالي للسيارات</h2>
                     <table class="excel-table">
                         <thead>
                             <tr>
-                                <th>??? ????</th>
-                                <th>???????</th>
-                                <th>??? ??????</th>
-                                <th>??? ???????</th>
-                                <th>???? ????????</th>
+                                <th>اسم الخط</th>
+                                <th>الوردية</th>
+                                <th>عدد الركاب</th>
+                                <th>سعة السيارة</th>
+                                <th>نسبة الامتلاء</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -874,7 +874,7 @@
             summaryReportSection.innerHTML = reportHtml;
         }
         
-        // ==================== ????? ????? ??? ????? ?????? ====================
+        // ==================== تهيئة أولية عند تحميل الصفحة ====================
         document.addEventListener('DOMContentLoaded', () => {
             updateCarsList();
             updateEmployeesList();
