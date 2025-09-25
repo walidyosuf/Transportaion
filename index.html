@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>????? ????? ?????? ?????? ??????</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .description {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .app-section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #34495e;
+        }
+        
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background: #2980b9;
+        }
+        
+        .btn-secondary {
+            background: #95a5a6;
+        }
+        
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+        
+        .btn-excel {
+            background: #1d6f42;
+        }
+        
+        .btn-excel:hover {
+            background: #155d35;
+        }
+        
+        .cars-list, .employees-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .car-card, .employee-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 15px;
+            position: relative;
+        }
+        
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+        
+        .results-section {
+            display: none;
+        }
+        
+        .result-card {
+            background: #e8f4fc;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        
+        .summary {
+            background: #d5eddb;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 4px;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid #3498db;
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .excel-format {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .excel-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        
+        .excel-table th, .excel-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        
+        .excel-table th {
+            background-color: #f2f2f2;
+        }
+        
+        .file-input-container {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .file-input-container input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-input-label {
+            display: block;
+            padding: 10px;
+            background: #ecf0f1;
+            border: 2px dashed #bdc3c7;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-input-label:hover {
+            background: #dde4e6;
+            border-color: #3498db;
+        }
+        
+        .file-name {
+            margin-top: 5px;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        .upload-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .upload-actions button {
+            flex: 1;
+            margin-top: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .cars-list, .employees-list {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .upload-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>????? ????? ?????? ?????? ??????</h1>
+            <p class="description">???? ??? ?????? ?????? ??? ?????? ?????? ????? ??? ???????? ?????? ?????? ?????????</p>
+        </header>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="cars">????? ???????? ?????????</div>
+            <div class="tab" data-tab="employees">????? ??????</div>
+            <div class="tab" data-tab="distribution">????? ??????</div>
+        </div>
+        
+        <!-- ==================== ??? ????? ???????? ==================== -->
+        <div class="tab-content active" id="cars-tab">
+            <div class="app-section">
+                <h2>??????? ?????? ???????? ?? ??? Excel</h2>
+                <div class="excel-format">
+                    <h3>????? ??? Excel ??????? ????????:</h3>
+                    <p>??? ?? ????? ????? ??? ??????? ??????? ????????. ???? ????? ??????? ???????? ??? ??? ???? ??????.</p>
+                    <table class="excel-table">
+                        <thead>
+                            <tr>
+                                <th>??? ????</th>
+                                <th>??? ???????</th>
+                                <th>???? ??????</th>
+                                <th>???? ???????</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>?? ??????</td>
+                                <td>14</td>
+                                <td>???? ????????</td>
+                                <td>06:00</td>
+                            </tr>
+                             <tr>
+                                <td>?? ??????</td>
+                                <td>14</td>
+                                <td>???? ???????</td>
+                                <td>06:15</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>??????: ????? ????? <a href="#" id="downloadCarTemplate">????? ??? Excel ????????</a>.</p>
+                </div>
+                 <div class="input-group">
+                    <label>????? ??? Excel ????????</label>
+                    <div class="file-input-container">
+                        <input type="file" id="carsExcelFile" accept=".xlsx, .xls">
+                        <div class="file-input-label">
+                            <span id="carFileLabel">???? ??????? ??? Excel</span>
+                            <div class="file-name" id="carFileName"></div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="upload-actions">
+                    <button id="importCarsExcelBtn" class="btn-excel">??????? ?????? ????????</button>
+                    <button id="clearCarsBtn" class="btn-secondary">??? ???? ????????</button>
+                </div>
+            </div>
+
+            <div class="app-section">
+                <h2>???????? ??????? (<span id="carsCount">0</span>)</h2>
+                <div class="cars-list" id="carsList">
+                    <!-- ????? ???????? ??? ?????????? -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- ==================== ??? ????? ?????? ==================== -->
+        <div class="tab-content" id="employees-tab">
+            <div class="app-section">
+                <h2>??????? ?????? ?????? ?? ??? Excel</h2>
+                
+                <div class="excel-format">
+                    <h3>????? ??? Excel ??????? ??????:</h3>
+                    <p>?? ??? ??? ??? ??????? ??????? ???? ???????? "????? ???? ?????".</p>
+                    <table class="excel-table">
+                        <thead>
+                            <tr>
+                                <th>??? ??????</th>
+                                <th>???????</th>
+                                <th>???? ??????</th>
+                                <th>???????</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>???? ????</td>
+                                <td>???????</td>
+                                <td>???? ????????</td>
+                                <td>????? ???? ????? (7:30? - 7:30?)</td>
+                            </tr>
+                            <tr>
+                                <td>????? ???????</td>
+                                <td>??????? ???????</td>
+                                <td>???? ???????</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>??????: ????? ????? <a href="#" id="downloadEmployeeTemplate">????? ??? Excel ??????</a>.</p>
+                </div>
+                
+                <div class="input-group">
+                    <label>????? ??? Excel ??????</label>
+                    <div class="file-input-container">
+                        <input type="file" id="employeesExcelFile" accept=".xlsx, .xls">
+                        <div class="file-input-label">
+                            <span id="employeeFileLabel">???? ??????? ??? Excel</span>
+                            <div class="file-name" id="employeeFileName"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="upload-actions">
+                    <button id="importEmployeesExcelBtn" class="btn-excel">??????? ????????</button>
+                    <button id="clearEmployeesBtn" class="btn-secondary">??? ???? ??????</button>
+                </div>
+            </div>
+            
+            <div class="app-section">
+                <h2>?????? ???????? (<span id="employeesCount">0</span>)</h2>
+                <div class="employees-list" id="employeesList">
+                    <!-- ????? ?????? ??? ?????????? -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- ==================== ??? ????? ?????? ==================== -->
+        <div class="tab-content" id="distribution-tab">
+            <div class="app-section">
+                <h2>????? ?????? ??? ????????</h2>
+                <p>???? ???? ??????? ?????? ????? ??? ????? ?????? ???? ???????? ??????? ??? ????? ??? ???.</p>
+                <button id="calculateDistribution">???? ??????? ??????</button>
+            </div>
+            
+            <div class="results-section" id="resultsSection">
+                <h2>????? ???????</h2>
+                <div id="distributionResults">
+                    <!-- ????? ??????? ??? -->
+                </div>
+                <div id="summaryReportSection">
+                    <!-- ????? ??????? ???????? ??? -->
+                </div>
+                <div class="summary" id="distributionSummary">
+                    <!-- ???? ??????? -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== ????? ????????? ??????? ??????? ====================
+        let cars = [];
+        let employees = [];
+
+        // ????? DOM
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        // ????? ????????
+        const carsList = document.getElementById('carsList');
+        const carsCount = document.getElementById('carsCount');
+        const carsExcelFile = document.getElementById('carsExcelFile');
+        const importCarsExcelBtn = document.getElementById('importCarsExcelBtn');
+        const clearCarsBtn = document.getElementById('clearCarsBtn');
+        const carFileLabel = document.getElementById('carFileLabel');
+        const carFileName = document.getElementById('carFileName');
+        const downloadCarTemplate = document.getElementById('downloadCarTemplate');
+
+        // ????? ??????
+        const employeesList = document.getElementById('employeesList');
+        const employeesCount = document.getElementById('employeesCount');
+        const employeesExcelFile = document.getElementById('employeesExcelFile');
+        const importEmployeesExcelBtn = document.getElementById('importEmployeesExcelBtn');
+        const clearEmployeesBtn = document.getElementById('clearEmployeesBtn');
+        const employeeFileLabel = document.getElementById('employeeFileLabel');
+        const employeeFileName = document.getElementById('employeeFileName');
+        const downloadEmployeeTemplate = document.getElementById('downloadEmployeeTemplate');
+        
+        // ????? ???????
+        const calculateDistributionBtn = document.getElementById('calculateDistribution');
+        const resultsSection = document.getElementById('resultsSection');
+        const distributionResults = document.getElementById('distributionResults');
+        const distributionSummary = document.getElementById('distributionSummary');
+        const summaryReportSection = document.getElementById('summaryReportSection');
+
+        // ==================== ???? ??????? (Tabs) ====================
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.getAttribute('data-tab');
+                
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(tc => tc.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(`${tabId}-tab`).classList.add('active');
+            });
+        });
+
+        // ==================== ????? ????? ???????? ====================
+
+        function updateCarsList() {
+            carsList.innerHTML = '';
+            carsCount.textContent = cars.length;
+            
+            if (cars.length === 0) {
+                carsList.innerHTML = '<p>?? ??? ????? ?? ?????? ???.</p>';
+                return;
+            }
+            
+            cars.forEach(car => {
+                const carCard = document.createElement('div');
+                carCard.className = 'car-card';
+                carCard.innerHTML = `
+                    <button class="delete-btn" onclick="deleteCar(${car.id})">×</button>
+                    <h3>${car.lineName}</h3>
+                    <p><strong>?????:</strong> ${car.capacity} ????</p>
+                    <p><strong>???????:</strong> ${car.stations.join('? ')}</p>
+                    <p><strong>????????:</strong> ${car.times.join('? ')}</p>
+                `;
+                carsList.appendChild(carCard);
+            });
+        }
+
+        function deleteCar(id) {
+            cars = cars.filter(car => car.id !== id);
+            updateCarsList();
+        }
+
+        carsExcelFile.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                carFileName.textContent = file.name;
+                carFileLabel.textContent = '?? ?????? ?????: ' + file.name;
+            } else {
+                carFileName.textContent = '';
+                carFileLabel.textContent = '???? ??????? ??? Excel';
+            }
+        });
+
+        importCarsExcelBtn.addEventListener('click', function() {
+            const file = carsExcelFile.files[0];
+            if (!file) {
+                alert('???? ?????? ??? Excel ???????? ?????.');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                    
+                    const carData = {};
+
+                    for (let i = 1; i < jsonData.length; i++) {
+                        const row = jsonData[i];
+                        if (row && row[0] && row[1] && row[2] && row[3]) {
+                            const lineName = row[0].toString().trim();
+                            const capacity = parseInt(row[1]);
+                            const station = row[2].toString().trim();
+                            const time = row[3].toString().trim();
+
+                            if (!carData[lineName]) {
+                                carData[lineName] = {
+                                    lineName: lineName,
+                                    capacity: capacity,
+                                    stations: [],
+                                    times: []
+                                };
+                            }
+                            carData[lineName].stations.push(station);
+                            carData[lineName].times.push(time);
+                        }
+                    }
+                    
+                    let importedCount = 0;
+                    // Clear existing cars before importing new ones
+                    cars = [];
+                    for (const lineName in carData) {
+                         cars.push({
+                            id: Date.now() + importedCount,
+                            ...carData[lineName]
+                        });
+                        importedCount++;
+                    }
+                    
+                    updateCarsList();
+                    alert(`?? ??????? ${importedCount} ??/???? ?????.`);
+                    carsExcelFile.value = '';
+                    carFileName.textContent = '';
+                    carFileLabel.textContent = '???? ??????? ??? Excel';
+
+                } catch (error) {
+                    console.error('Error reading car Excel file:', error);
+                    alert('??? ??? ????? ????? ??? Excel. ???? ?????? ?? ??? ????? ?????.');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        });
+        
+        clearCarsBtn.addEventListener('click', function() {
+            if (cars.length > 0 && confirm('?? ??? ????? ?? ????? ?? ??? ???? ?????? ?????????')) {
+                cars = [];
+                updateCarsList();
+            }
+        });
+
+        downloadCarTemplate.addEventListener('click', function(e) {
+            e.preventDefault();
+            const data = [
+                ['??? ????', '??? ???????', '???? ??????', '???? ???????'],
+                ['?? ??????', 14, '???? ????????', '06:00'],
+                ['?? ??????', 14, '???? ???????', '06:15'],
+                ['?? ?????', 10, '???? ??????', '06:30']
+            ];
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, '????????');
+            XLSX.writeFile(wb, '?????_??????_????????.xlsx');
+        });
+
+        // ==================== ????? ????? ?????? ====================
+        
+        function updateEmployeesList() {
+            employeesList.innerHTML = '';
+            employeesCount.textContent = employees.length;
+            
+            if (employees.length === 0) {
+                employeesList.innerHTML = '<p>?? ??? ????? ?? ???? ???.</p>';
+                return;
+            }
+            
+            employees.forEach(employee => {
+                const employeeCard = document.createElement('div');
+                employeeCard.className = 'employee-card';
+                employeeCard.innerHTML = `
+                    <button class="delete-btn" onclick="deleteEmployee(${employee.id})">×</button>
+                    <h3>${employee.name}</h3>
+                    <p><strong>???????:</strong> ${employee.department}</p>
+                    <p><strong>???? ??????:</strong> ${employee.station}</p>
+                    <p><strong>???????:</strong> ${employee.shift}</p>
+                `;
+                employeesList.appendChild(employeeCard);
+            });
+        }
+
+        function deleteEmployee(id) {
+            employees = employees.filter(emp => emp.id !== id);
+            updateEmployeesList();
+        }
+
+        employeesExcelFile.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                employeeFileName.textContent = file.name;
+                employeeFileLabel.textContent = '?? ?????? ?????: ' + file.name;
+            } else {
+                employeeFileName.textContent = '';
+                employeeFileLabel.textContent = '???? ??????? ??? Excel';
+            }
+        });
+
+        importEmployeesExcelBtn.addEventListener('click', function() {
+            const file = employeesExcelFile.files[0];
+            if (!file) {
+                alert('???? ?????? ??? Excel ?????? ?????.');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+                    
+                    let importedCount = 0;
+                    // Clear existing employees before importing
+                    employees = [];
+                    for (let i = 1; i < jsonData.length; i++) {
+                        const row = jsonData[i];
+                         if (row && row[0] && row[1] && row[2]) {
+                            const employee = {
+                                id: Date.now() + i,
+                                name: row[0].toString(),
+                                department: row[1].toString(),
+                                station: row[2].toString(),
+                                shift: (row[3] && row[3].toString().trim() !== '') ? row[3].toString() : '????? ???? ????? (8? - 4?)'
+                            };
+                            employees.push(employee);
+                            importedCount++;
+                        }
+                    }
+                    
+                    updateEmployeesList();
+                    alert(`?? ??????? ${importedCount} ???? ?????.`);
+                    employeesExcelFile.value = '';
+                    employeeFileName.textContent = '';
+                    employeeFileLabel.textContent = '???? ??????? ??? Excel';
+
+                } catch (error) {
+                    console.error('Error reading employee Excel file:', error);
+                    alert('??? ??? ????? ????? ??? Excel. ???? ?????? ?? ??? ????? ?????.');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+        clearEmployeesBtn.addEventListener('click', function() {
+            if (employees.length > 0 && confirm('?? ??? ????? ?? ????? ?? ??? ???? ?????? ???????')) {
+                employees = [];
+                updateEmployeesList();
+            }
+        });
+        
+        downloadEmployeeTemplate.addEventListener('click', function(e) {
+            e.preventDefault();
+            const data = [
+                ['??? ??????', '???????', '???? ??????', '???????'],
+                ['???? ????', '???????', '???? ????????', '????? ???? ????? (7:30? - 7:30?)'],
+                ['????? ???????', '??????? ???????', '???? ???????', ''],
+                ['???? ???', '???????', '???? ??????', '????? ????? ????? (3:30? - 11:30?)']
+            ];
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, '??????');
+            XLSX.writeFile(wb, '?????_??????_??????.xlsx');
+        });
+
+        // ==================== ????? ??????? ???????? ====================
+
+        calculateDistributionBtn.addEventListener('click', () => {
+            if (cars.length === 0 || employees.length === 0) {
+                alert('???? ????? ?????? ???????? ??????? ?????.');
+                return;
+            }
+            
+            const { finalDistribution, allUnassigned } = calculateOptimalDistribution();
+            displayDistributionResults(finalDistribution, allUnassigned);
+            displaySummaryReport(finalDistribution);
+            resultsSection.style.display = 'block';
+        });
+
+        function calculateOptimalDistribution() {
+            const uniqueShifts = [...new Set(employees.map(e => e.shift))];
+            let finalDistribution = [];
+            let allUnassigned = [...employees]; 
+
+            uniqueShifts.forEach(shift => {
+                const shiftEmployees = JSON.parse(JSON.stringify(employees.filter(e => e.shift === shift)));
+                const availableCarsForShift = JSON.parse(JSON.stringify(cars));
+
+                const employeesByStation = {};
+                shiftEmployees.forEach(emp => {
+                    if (!employeesByStation[emp.station]) {
+                        employeesByStation[emp.station] = [];
+                    }
+                    employeesByStation[emp.station].push(emp);
+                });
+
+                const distributionForShift = availableCarsForShift.map(car => ({
+                    ...car,
+                    assignedEmployees: [],
+                    remainingCapacity: car.capacity,
+                    shift: shift
+                }));
+                
+                distributionForShift.forEach(car => {
+                    car.stations.forEach((station, index) => {
+                        const pickupTime = car.times[index];
+                        if (employeesByStation[station] && employeesByStation[station].length > 0) {
+                            const waitingEmployees = employeesByStation[station];
+                            
+                            while (car.remainingCapacity > 0 && waitingEmployees.length > 0) {
+                                const employeeToAssign = waitingEmployees.shift();
+                                employeeToAssign.pickupTime = pickupTime; // Add pickup time
+                                car.assignedEmployees.push(employeeToAssign);
+                                car.remainingCapacity--;
+                                allUnassigned = allUnassigned.filter(un => un.id !== employeeToAssign.id);
+                            }
+                        }
+                    });
+                });
+                
+                finalDistribution.push(...distributionForShift.filter(car => car.assignedEmployees.length > 0));
+            });
+
+            return { finalDistribution, allUnassigned };
+        }
+
+
+        function displayDistributionResults(distribution, unassignedEmployees) {
+            distributionResults.innerHTML = '';
+            let totalAssigned = 0;
+            const uniqueShiftsInResults = [...new Set(distribution.map(c => c.shift))].sort();
+
+            if (distribution.length === 0 && unassignedEmployees.length > 0) {
+                 distributionResults.innerHTML = `<p>?? ??? ?????? ??? ?????? ?????? ??? ?? ?????? ?????? ????????.</p>`;
+            }
+
+
+            uniqueShiftsInResults.forEach(shift => {
+                 if (distribution.some(car => car.shift === shift && car.assignedEmployees.length > 0)) {
+                    distributionResults.innerHTML += `<h2 style="margin-top:20px;">????? ???????: ${shift}</h2>`;
+
+                    distribution.filter(car => car.shift === shift).forEach(car => {
+                        if (car.assignedEmployees.length > 0) {
+                            totalAssigned += car.assignedEmployees.length;
+
+                            let employeesListHtml = '<ul>';
+                            car.assignedEmployees.forEach(emp => {
+                                employeesListHtml += `<li>${emp.name} (??: ${emp.station} - ??????: ${emp.pickupTime})</li>`;
+                            });
+                            employeesListHtml += '</ul>';
+
+                            const resultCard = document.createElement('div');
+                            resultCard.className = 'result-card';
+                            resultCard.innerHTML = `
+                                <h3>${car.lineName}</h3>
+                                <p><strong>???????:</strong> ${car.shift}</p>
+                                <p><strong>?????:</strong> ${car.capacity} | <strong>?????? ????????:</strong> ${car.assignedEmployees.length}</p>
+                                <h4>??????:</h4>
+                                ${employeesListHtml}
+                            `;
+                            distributionResults.appendChild(resultCard);
+                        }
+                    });
+                }
+            });
+            
+            if (unassignedEmployees.length > 0) {
+                let unassignedListHtml = unassignedEmployees.map(emp => `<li>${emp.name} (????: ${emp.station}, ?????: ${emp.shift})</li>`).join('');
+                distributionResults.innerHTML += `
+                    <div class="result-card" style="border-color: #e74c3c; margin-top: 20px;">
+                        <h3>???? ?? ??? ???????</h3>
+                        <p>???? ??? ???? ????? ??????? ?? ?????? ??? ???????? ??????? ?? ???????.</p>
+                        <ul>${unassignedListHtml}</ul>
+                    </div>
+                `;
+            }
+        }
+
+        function displaySummaryReport(distribution) {
+            summaryReportSection.innerHTML = '';
+            if (distribution.length === 0) return;
+
+            let reportHtml = `
+                <div class="app-section">
+                    <h2>??????? ???????? ????????</h2>
+                    <table class="excel-table">
+                        <thead>
+                            <tr>
+                                <th>??? ????</th>
+                                <th>???????</th>
+                                <th>??? ??????</th>
+                                <th>??? ???????</th>
+                                <th>???? ????????</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            distribution.forEach(car => {
+                const occupancy = (car.assignedEmployees.length / car.capacity) * 100;
+                reportHtml += `
+                    <tr>
+                        <td>${car.lineName}</td>
+                        <td>${car.shift}</td>
+                        <td>${car.assignedEmployees.length}</td>
+                        <td>${car.capacity}</td>
+                        <td>${occupancy.toFixed(1)}%</td>
+                    </tr>
+                `;
+            });
+
+            reportHtml += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            summaryReportSection.innerHTML = reportHtml;
+        }
+        
+        // ==================== ????? ????? ??? ????? ?????? ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCarsList();
+            updateEmployeesList();
+            // No longer need to add a manual row
+        });
+
+    </script>
+</body>
+</html>
+
